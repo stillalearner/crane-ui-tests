@@ -18,8 +18,6 @@ export function click(fieldId: string): void {
 
 export function login(): void {
   cy.visit(craneUiUrl);
-  //clickByText('button', 'flexy-htpasswd-provider');
-  cy.wait(20000);
   inputText(loginView.userNameInput, userName);
   inputText(loginView.userPasswordInput, userPassword);
   clickByText('button', 'Log in');
