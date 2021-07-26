@@ -1,35 +1,25 @@
 import { PlanData } from '../types/types';
-import {
-  clickByText,
-  click,
-  inputText,
-} from '../../utils/utils';
+import { clickByText, click, inputText, next, selectFromDroplist } from '../../utils/utils';
 import { navMenuPoint } from '../views/menu.view';
-import { planNameInput, selectSourceCluster, selectTargetCluster, selectRepo, 
-  searchInput, searchButton, directPvMigrationCheckbox, dataLabel } from '../views/plan.view';
+import { planNameInput, searchInput, searchButton, directPvMigrationCheckbox,
+  dataLabel, kebab, kebabDropDownItem } from '../views/plan.view';
 
 export class Plan {
   protected static openList(): void {
-    //openSidebarMenu();
     clickByText(navMenuPoint, 'Migration plans');
   }
   
   protected generalStep(planData: PlanData): void {
     const { name, source, target, repo } = planData;
     inputText(planNameInput, name);
-    clickByText('button', 'Select source');
-    clickByText('button', source);
-    clickByText('button', 'Select target');
-    clickByText('button', target);
-    clickByText('button', 'Select repository');
-    clickByText('button', repo);
-    clickByText('button', 'Next');
-    //clickByText(storageProvider, type);
+    selectFromDroplist('Select source', source);
+    selectFromDroplist('Select target', target);
+    selectFromDroplist('Select repository', repo);
+    next();
   }
 
   protected selectNamespace(planData: PlanData): void {
     const { namespaceList } = planData;
-    //const selector = `[aria-label="search button for search input"]`;
     namespaceList.forEach((name) => {
       inputText(searchInput, name);
       click(searchButton);
@@ -40,22 +30,22 @@ export class Plan {
           click('input');
         });
     });
-    clickByText('button', 'Next');
+    next();
   }
 
   protected persistentVolumes(): void {
     //Wait for PVs to be listed and the 'Next' button to be enabled
     cy.contains('button', 'Next', { timeout: 100000 }).should('be.enabled');
-    clickByText('button', 'Next');
+    next();
   }
 
   protected copyOptions(): void {
-    clickByText('button', 'Next');
+    next();
   }
 
   protected migrationOptions(): void {
     cy.get(directPvMigrationCheckbox, { timeout: 20000 }).should('be.enabled').uncheck();
-    clickByText('button', 'Next');
+    next();
   }
 
   protected hooks(): void {
@@ -63,17 +53,19 @@ export class Plan {
   }
 
   protected run(name: string): void {
-    cy.get('td')
+    cy.get('th')
       .contains(name)
-      .parent('td')
       .parent('tr')
       .within(() => {
-        clickByText('button', 'Migrate');
+        click(kebab);
     });
+    clickByText(kebabDropDownItem, 'Migrate');
+    //Confirm dialog before migration
+    clickByText('button', 'Migrate');
   }
 
   protected waitForReady(name: string): void {
-    cy.get('td')
+    cy.get('th')
       .contains(name)
       .closest('tr')
       .within(() => {
@@ -83,7 +75,7 @@ export class Plan {
 
   protected waitForSuccess(name: string): void {
     cy.get('td')
-      .contains(name)
+      .contains(name, { timeout: 10000 })
       .closest('tr')
       .within(() => {
         cy.get(dataLabel.status).contains('Migration succeeeded', { timeout: 200000 });
@@ -92,6 +84,8 @@ export class Plan {
   
   create(planData: PlanData): void {
     const { name } = planData;
+
+    //Navigate to 'Migration plans tab and create a new plan
     Plan.openList();
     clickByText('button', 'Add migration plan');
     this.generalStep(planData);
@@ -100,15 +94,13 @@ export class Plan {
     this.copyOptions();
     this.migrationOptions();
     this.hooks();
-    cy.get('h3').should('contain', 'Validation successful')
+
+    //Assert that plan is successfully validated before proceeding
+    cy.get('h3').should('contain', 'Validation')
     clickByText('button', 'Close');
+
+    //Wait for plan to be in 'Ready' state
     this.waitForReady(name);
-    /*this.vmSelectionStep(planData);
-    this.networkMappingStep(planData);
-    this.storageMappingStep(planData);
-    this.selectMigrationTypeStep(planData);
-    this.hooksStep();
-    this.finalReviewStep(planData);*/
   }
 
   execute(planData: PlanData): void {
@@ -118,4 +110,3 @@ export class Plan {
     this.waitForSuccess(name);
   }
 }
-
