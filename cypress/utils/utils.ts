@@ -22,3 +22,12 @@ export function login(): void {
   inputText(loginView.userPasswordInput, userPassword);
   clickByText('button', 'Log in');
 }
+
+export function next(): void {
+  clickByText('button', 'Next');
+}
+
+export function selectFromDroplist(selector: string, selectionMade: string): void {
+  clickByText('button', selector);
+  clickByText('button', selectionMade);
+}
