@@ -8,7 +8,8 @@ export type RepoData = {
   type: string;
   name: string;
   bucket: string;
-  region: string;
+  region?: string;
+  url?: string;
   key: string;
   secret: string;
 };
@@ -19,4 +20,5 @@ export type PlanData = {
   target: string;
   repo: string;
   namespaceList : string[];
+  verifyCopy?: boolean;
 };

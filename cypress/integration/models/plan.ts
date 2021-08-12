@@ -1,7 +1,7 @@
 import { PlanData } from '../types/types';
 import { clickByText, click, inputText, next, selectFromDroplist } from '../../utils/utils';
 import { navMenuPoint } from '../views/menu.view';
-import { planNameInput, searchInput, searchButton, directPvMigrationCheckbox,
+import { planNameInput, searchInput, searchButton, directPvMigrationCheckbox, verifyCopyCheckbox,
   dataLabel, kebab, kebabDropDownItem } from '../views/plan.view';
 
 export class Plan {
@@ -39,7 +39,13 @@ export class Plan {
     next();
   }
 
-  protected copyOptions(): void {
+  protected copyOptions(planData: PlanData): void {
+    const { verifyCopy } = planData;
+    if (verifyCopy) {
+      cy.get(verifyCopyCheckbox, { timeout: 20000 }).should('be.enabled').check();
+      //Close copy performance warning
+      clickByText('button', 'Close');
+    }
     next();
   }
 
@@ -91,13 +97,14 @@ export class Plan {
     this.generalStep(planData);
     this.selectNamespace(planData);
     this.persistentVolumes();
-    this.copyOptions();
+    this.copyOptions(planData);
     this.migrationOptions();
     this.hooks();
 
     //Assert that plan is successfully validated before proceeding
     cy.get('h3').should('contain', 'Validation')
     clickByText('button', 'Close');
+    cy.wait(10000);
 
     //Wait for plan to be in 'Ready' state
     this.waitForReady(name);
