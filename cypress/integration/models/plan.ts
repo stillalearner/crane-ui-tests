@@ -35,7 +35,7 @@ export class Plan {
 
   protected persistentVolumes(): void {
     //Wait for PVs to be listed and the 'Next' button to be enabled
-    cy.contains('button', 'Next', { timeout: 100000 }).should('be.enabled');
+    cy.contains('button', 'Next', { timeout: 200000 }).should('be.enabled');
     next();
   }
 
@@ -70,21 +70,30 @@ export class Plan {
     clickByText('button', 'Migrate');
   }
 
+  protected waitForNotReady(name: string): void {
+    cy.get('th')
+      .contains(name)
+      .closest('tr')
+      .within(() => {
+        cy.get(dataLabel.status).contains('Not Ready', { timeout: 2000 });
+      });
+  }
+
   protected waitForReady(name: string): void {
     cy.get('th')
       .contains(name)
       .closest('tr')
       .within(() => {
-        cy.get(dataLabel.status).contains('Ready', { timeout: 100000 });
+        cy.get(dataLabel.status).contains('Ready', { timeout: 10000 });
       });
   }
 
   protected waitForSuccess(name: string): void {
-    cy.get('td')
+    cy.get('th')
       .contains(name, { timeout: 10000 })
       .closest('tr')
       .within(() => {
-        cy.get(dataLabel.status).contains('Migration succeeeded', { timeout: 200000 });
+        cy.get(dataLabel.status).contains('Migration succeeded', { timeout: 600000 });
       });
   }
   
@@ -101,10 +110,9 @@ export class Plan {
     this.migrationOptions();
     this.hooks();
 
-    //Assert that plan is successfully validated before proceeding
-    cy.get('h3').should('contain', 'Validation')
+    //Assert that plan is successfully validated before being run
+    cy.get('span#condition-message').should('contain', 'The migration plan is ready', { timeout : 10000 });
     clickByText('button', 'Close');
-    cy.wait(10000);
 
     //Wait for plan to be in 'Ready' state
     this.waitForReady(name);
@@ -115,5 +123,25 @@ export class Plan {
     Plan.openList();
     this.run(name);
     this.waitForSuccess(name);
+  }
+
+  delete(planData: PlanData): void {
+    const { name } = planData;
+    Plan.openList();
+    cy.get('th')
+      .contains(name)
+      .parent('tr')
+      .within(() => {
+        click(kebab);
+    });
+    clickByText(kebabDropDownItem, 'Delete');
+
+    //Confirm dialog before deletion
+    clickByText('button', 'Confirm');
+    this.waitForNotReady(name);
+
+    //Wait for plan to be delted
+    //TO DO: Assert flash message upon deletion
+    cy.get('h3').should('contain', 'No migration plans exist', { timeout : 10000})
   }
 }
