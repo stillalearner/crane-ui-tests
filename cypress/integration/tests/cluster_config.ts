@@ -16,10 +16,19 @@ export const repoData: RepoData = {
   secret: 'secret',
 };
 
-export const planData: PlanData = {
-  name: 'july25',
-  source: 'mgn04',
+export const noVerifyCopyPlanData: PlanData = {
+  name: 'migration-without-verify-copy',
+  source: 'source-cluster',
   target: 'host',
-  repo: 'automatic-1',
-  namespaceList: ['july23'],
+  repo: 'automatic',
+  namespaceList: ['nandini'],
+};
+
+export const verifyCopyPlanData: PlanData = {
+  name: 'migration-with-copy-verify',
+  source: 'source-cluster',
+  target: 'host',
+  repo: 'automatic',
+  namespaceList: ['nandini'],
+  verifyCopy : true,
 };

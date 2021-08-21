@@ -18,6 +18,7 @@ export function click(fieldId: string): void {
 
 export function login(): void {
   cy.visit(craneUiUrl);
+  cy.findByText('kube:admin').click();
   inputText(loginView.userNameInput, userName);
   inputText(loginView.userPasswordInput, userPassword);
   clickByText('button', 'Log in');

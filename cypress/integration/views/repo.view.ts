@@ -10,3 +10,6 @@ export enum dataLabel {
     plans = '[Associated plans]',
     status = '[data-label=Status]',
 }
+
+//S3 selectors
+export const s3Endpoint = '#s3Url'
