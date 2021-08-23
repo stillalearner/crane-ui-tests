@@ -49,7 +49,11 @@ export class Plan {
     next();
   }
 
-  protected migrationOptions(): void {
+  protected migrationOptions(planData: PlanData): void {
+    const { directPvmigration } = planData;
+    if (directPvmigration)
+      cy.get(directPvMigrationCheckbox, { timeout: 20000 }).should('be.enabled').check();
+    else
     cy.get(directPvMigrationCheckbox, { timeout: 20000 }).should('be.enabled').uncheck();
     next();
   }
