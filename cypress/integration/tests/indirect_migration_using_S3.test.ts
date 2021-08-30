@@ -1,12 +1,14 @@
-import { noVerifyCopyPlanData, verifyCopyPlanData } from './cluster_config';
+import { noVerifyCopyPlanData, verifyCopyPlanData, directPvPlanData, verifyCopydirectPvPlan } from './cluster_config';
 import { login } from '../../utils/utils';
 import { Plan } from '../models/plan';
 
 describe('Automated test to do an indirect migration using Amazon S3 using file system copy method', () => {
   const plan = new Plan();
   const selectorTuple = [
-    [noVerifyCopyPlanData, 'Direct migration without copy verification'],
-    [verifyCopyPlanData, 'Direct migration with copy verification'],
+    [directPvPlanData, 'Direct PV migration without copy verification'],
+    [verifyCopydirectPvPlan, 'Direct PV migration with copy verification'],
+    [noVerifyCopyPlanData, 'Indirect migration without copy verification'],
+    [verifyCopyPlanData, 'Indirect migration with copy verification'],
   ];
   
   beforeEach("Login", () => {

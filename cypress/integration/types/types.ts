@@ -21,4 +21,5 @@ export type PlanData = {
   repo: string;
   namespaceList : string[];
   verifyCopy?: boolean;
+  directPvmigration?: boolean;
 };

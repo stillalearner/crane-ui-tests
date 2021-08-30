@@ -49,7 +49,11 @@ export class Plan {
     next();
   }
 
-  protected migrationOptions(): void {
+  protected migrationOptions(planData: PlanData): void {
+    const { directPvmigration } = planData;
+    if (directPvmigration)
+      cy.get(directPvMigrationCheckbox, { timeout: 20000 }).should('be.enabled').check();
+    else
     cy.get(directPvMigrationCheckbox, { timeout: 20000 }).should('be.enabled').uncheck();
     next();
   }
@@ -107,12 +111,12 @@ export class Plan {
     this.selectNamespace(planData);
     this.persistentVolumes();
     this.copyOptions(planData);
-    this.migrationOptions();
+    this.migrationOptions(planData);
     this.hooks();
 
     //Assert that plan is successfully validated before being run
     cy.get('span#condition-message').should('contain', 'The migration plan is ready', { timeout : 10000 });
-    clickByText('button', 'Close');
+    cy.wait(500).findByText("Close").click();
 
     //Wait for plan to be in 'Ready' state
     this.waitForReady(name);
@@ -138,10 +142,8 @@ export class Plan {
 
     //Confirm dialog before deletion
     clickByText('button', 'Confirm');
-    this.waitForNotReady(name);
 
     //Wait for plan to be delted
-    //TO DO: Assert flash message upon deletion
-    cy.get('h3').should('contain', 'No migration plans exist', { timeout : 10000})
+    cy.findByText(`Successfully removed plan "${name}"!`, {timeout : 15000});
   }
 }
