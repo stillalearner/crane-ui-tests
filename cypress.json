@@ -1,5 +1,11 @@
 {
   "viewportWidth": 1280,
   "viewportHeight": 800,
-  "supportFile": "cypress/support/commands.js"
+  "supportFile": "cypress/support/commands.js",
+  "env": {
+        "user": "kubeadmin",
+        "pass": "",
+        "craneUrl": ""
+   }
+
 }
