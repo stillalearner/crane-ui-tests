@@ -51,3 +51,12 @@ export const verifyCopydirectPvPlan: PlanData = {
   directPvmigration : true,
   verifyCopy : true,
 }
+
+export const directImagePlanData: PlanData = {
+  name: 'direct-pv-migration-with-copy-verify',
+  source: 'source-cluster',
+  target: 'host',
+  repo: 'automatic',
+  namespaceList: ['nandini'],
+  directImageMigration : true,
+}
