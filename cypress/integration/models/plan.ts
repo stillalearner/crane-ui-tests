@@ -54,12 +54,12 @@ export class Plan {
     if (directPvmigration)
       cy.get(directPvMigrationCheckbox, { timeout: 20000 }).should('be.enabled').check();
     else
-    cy.get(directPvMigrationCheckbox, { timeout: 20000 }).should('be.enabled').uncheck();
+      cy.get(directPvMigrationCheckbox, { timeout: 20000 }).should('be.enabled').uncheck();
 
     if (directImageMigration)
       cy.get(directImageMigrationCheckbox, { timeout: 20000 }).should('be.enabled').check();
     else
-    cy.get(directImageMigrationCheckbox, { timeout: 20000 }).should('be.enabled').uncheck();
+      cy.get(directImageMigrationCheckbox, { timeout: 20000 }).should('be.enabled').uncheck();
     next();
   }
 
