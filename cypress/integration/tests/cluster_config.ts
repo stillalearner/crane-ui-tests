@@ -53,7 +53,7 @@ export const verifyCopydirectPvPlan: PlanData = {
 }
 
 export const directImagePlanData: PlanData = {
-  name: 'direct-pv-migration-with-copy-verify',
+  name: 'direct-image-migration',
   source: 'source-cluster',
   target: 'host',
   repo: 'automatic',

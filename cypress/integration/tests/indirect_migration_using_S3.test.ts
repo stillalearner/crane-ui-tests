@@ -6,9 +6,9 @@ import { Plan } from '../models/plan';
 describe('Automated test to do an indirect migration using Amazon S3 using file system copy method', () => {
   const plan = new Plan();
   const selectorTuple = [
+    [directImagePlanData, 'Direct image migration without copy verification'],
     [directPvPlanData, 'Direct PV migration without copy verification'],
     [verifyCopydirectPvPlan, 'Direct PV migration with copy verification'],
-    [directImagePlanData, 'Direct image migration without copy verification'],
     [noVerifyCopyPlanData, 'Indirect migration without copy verification'],
     [verifyCopyPlanData, 'Indirect migration with copy verification'],
   ];
