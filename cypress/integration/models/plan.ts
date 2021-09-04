@@ -2,7 +2,7 @@ import { PlanData } from '../types/types';
 import { clickByText, click, inputText, next, selectFromDroplist } from '../../utils/utils';
 import { navMenuPoint } from '../views/menu.view';
 import { planNameInput, searchInput, searchButton, directPvMigrationCheckbox, verifyCopyCheckbox,
-  dataLabel, kebab, kebabDropDownItem } from '../views/plan.view';
+  directImageMigrationCheckbox, dataLabel, kebab, kebabDropDownItem } from '../views/plan.view';
 
 export class Plan {
   protected static openList(): void {
@@ -50,11 +50,16 @@ export class Plan {
   }
 
   protected migrationOptions(planData: PlanData): void {
-    const { directPvmigration } = planData;
+    const { directPvmigration, directImageMigration } = planData;
     if (directPvmigration)
       cy.get(directPvMigrationCheckbox, { timeout: 20000 }).should('be.enabled').check();
     else
-    cy.get(directPvMigrationCheckbox, { timeout: 20000 }).should('be.enabled').uncheck();
+      cy.get(directPvMigrationCheckbox, { timeout: 20000 }).should('be.enabled').uncheck();
+
+    if (directImageMigration)
+      cy.get(directImageMigrationCheckbox, { timeout: 20000 }).should('be.enabled').check();
+    else
+      cy.get(directImageMigrationCheckbox, { timeout: 20000 }).should('be.enabled').uncheck();
     next();
   }
 

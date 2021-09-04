@@ -13,6 +13,7 @@ export const verifyCopyCheckbox = '.pf-c-check__input';
 
 //Plan creation form - Migration options page
 export const directPvMigrationCheckbox = '#indirectVolumeMigration';
+export const directImageMigrationCheckbox = '#indirectImageMigration';
 
 //Plan list page
 export const kebab = '.pf-c-dropdown__toggle.pf-m-plain';

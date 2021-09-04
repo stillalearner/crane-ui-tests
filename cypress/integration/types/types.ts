@@ -22,4 +22,5 @@ export type PlanData = {
   namespaceList : string[];
   verifyCopy?: boolean;
   directPvmigration?: boolean;
+  directImageMigration?: boolean;
 };
