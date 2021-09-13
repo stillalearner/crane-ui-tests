@@ -106,6 +106,24 @@ export class Plan {
       });
   }
   
+  getStepStatus(step): void {
+    cy.get('td')
+      .contains(step)
+      .closest('tr')
+      .within(() => {
+        cy.get('[data-label="Status"]').contains('Complete', { timeout: 2000 });
+      });
+  }
+
+  measureStepProgress(stage): void {
+    cy.get('td')
+      .contains('Backup')
+      .closest('tr')
+      .within(() => {
+        cy.get('.pf-c-progress__measure').contains('100%', { timeout: 2000 });
+      });
+  }
+
   create(planData: PlanData): void {
     const { name } = planData;
 
@@ -132,6 +150,23 @@ export class Plan {
     Plan.openList();
     this.run(name);
     this.waitForSuccess(name);
+  }
+
+  pipelineStatus(migrationType: string): void {
+    //Common to both migration and staged migration 
+    this.getStepStatus('Prepare');
+    this.getStepStatus('stagebackup');
+    this.getStepStatus('cleanup');
+
+    if (migrationType.match('Stage'))
+      this.getStepStatus('StageRestore');
+    else 
+      this.getStepStatus('backup');
+      this.measureStepProgress('backup');
+      this.getStepStatus('directimage');
+      this.getStepStatus('directvolume');
+      this.getStepStatus('restore');
+      this.measureStepProgress('restore');
   }
 
   delete(planData: PlanData): void {
