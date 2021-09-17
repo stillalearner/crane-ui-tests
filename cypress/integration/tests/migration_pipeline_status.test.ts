@@ -1,6 +1,8 @@
 import { directImagePvPlan } from './cluster_config';
 import { login } from '../../utils/utils';
 import { Plan } from '../models/plan';
+import { clickByText, click, inputText, next, selectFromDroplist } from '../../utils/utils';
+import { navMenuPoint } from '../views/menu.view';
   
 /* TO DO: Automate deployment of application 
 
@@ -25,9 +27,11 @@ describe('Automated test to verify pipeline status after migration, staged migra
       const [Data, migrationType] = $type;
   
       specify(`${migrationType}`, () => {
+      clickByText(navMenuPoint, 'Migration plans');
+
       plan.create(Data);
       plan.execute(Data);
-      plan.pipelineStatus(migrationType);
+      plan.pipelineStatus(migrationType, Data);
       plan.delete(Data);
       });
     });

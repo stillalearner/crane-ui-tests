@@ -1,5 +1,5 @@
 import { PlanData } from '../types/types';
-import { clickByText, click, inputText, next, selectFromDroplist } from '../../utils/utils';
+import { clickByText, click, inputText, next, selectFromDroplist, getTd } from '../../utils/utils';
 import { navMenuPoint } from '../views/menu.view';
 import { planNameInput, searchInput, searchButton, directPvMigrationCheckbox, verifyCopyCheckbox,
   directImageMigrationCheckbox, dataLabel, kebab, kebabDropDownItem } from '../views/plan.view';
@@ -74,7 +74,8 @@ export class Plan {
       .within(() => {
         click(kebab);
     });
-    clickByText(kebabDropDownItem, 'Migrate');
+    clickByText(kebabDropDownItem, 'Cutover');
+    cy.get('#transaction-halt-checkbox').uncheck()
     //Confirm dialog before migration
     clickByText('button', 'Migrate');
   }
@@ -106,22 +107,12 @@ export class Plan {
       });
   }
   
-  getStepStatus(step): void {
-    cy.get('td')
-      .contains(step)
-      .closest('tr')
-      .within(() => {
-        cy.get('[data-label="Status"]').contains('Complete', { timeout: 2000 });
-      });
+  StepStatus(step): void {
+    getTd(step, '[data-label="Status"]', 'Complete');
   }
 
-  measureStepProgress(stage): void {
-    cy.get('td')
-      .contains('Backup')
-      .closest('tr')
-      .within(() => {
-        cy.get('.pf-c-progress__measure').contains('100%', { timeout: 2000 });
-      });
+  StepProgress(step): void {
+    getTd(step, '.pf-c-progress__measure', '100%');
   }
 
   create(planData: PlanData): void {
@@ -152,21 +143,45 @@ export class Plan {
     this.waitForSuccess(name);
   }
 
-  pipelineStatus(migrationType: string): void {
-    //Common to both migration and staged migration 
-    this.getStepStatus('Prepare');
-    this.getStepStatus('stagebackup');
-    this.getStepStatus('cleanup');
+  pipelineStatus(migrationType: string, planData: PlanData): void {
+    const { name } = planData;
+
+    // On the migration plan list page, click on the link in the 'Migrations' column
+    cy.get('th')
+    .contains('name')
+    .closest('tr')
+    .within(() => {
+      cy.get('span.pf-c-icon.pf-m-info').click();
+    });
+
+    // Proceed with checking the status of the individual pipeline steps only if Cutover/Stage/Migration
+    // has successfully completed.
+    // While on the 'Migrations' page, verify that status for Cutover/Stage/Migration shows 'Completed'.
+
+    cy.get('td')
+      .contains('Cutover')
+      .closest('tr')
+      .within(() => {
+        cy.get('[data-label="Status"]').contains('Completed', { timeout: 2000 });
+      })
+    cy.get('td').contains('Cutover').click();
+
+    //Pipeline steps common to both migration and staged migration
+    this.StepStatus('Prepare');
+    this.StepStatus('StageBackup');
+    this.StepStatus('Cleanup');
 
     if (migrationType.match('Stage'))
-      this.getStepStatus('StageRestore');
+    //Pipeline step specific to staged migration
+      this.StepStatus('StageRestore');
     else 
-      this.getStepStatus('backup');
-      this.measureStepProgress('backup');
-      this.getStepStatus('directimage');
-      this.getStepStatus('directvolume');
-      this.getStepStatus('restore');
-      this.measureStepProgress('restore');
+    //Pipeline step specific to migration
+      this.StepStatus('Backup');
+      this.StepProgress('Backup');
+      this.StepStatus('DirectImage');
+      this.StepStatus('DirectVolume');
+      this.StepStatus('Restore');
+      this.StepProgress('Restore');
   }
 
   delete(planData: PlanData): void {
