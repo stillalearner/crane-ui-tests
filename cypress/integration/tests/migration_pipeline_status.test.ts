@@ -16,7 +16,6 @@ describe('Automated test to verify pipeline status after migration, staged migra
     const plan = new Plan();
     const selectorTuple = [
       [directImagePvPlan, 'Direct image and PV migration'],
-      [directImagePvPlan, 'Staged direct image and PV migration']
     ];
     
     beforeEach("Login", () => {

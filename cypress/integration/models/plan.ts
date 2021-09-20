@@ -107,11 +107,11 @@ export class Plan {
       });
   }
   
-  StepStatus(step): void {
+  stepStatus(step): void {
     getTd(step, '[data-label="Status"]', 'Complete');
   }
 
-  StepProgress(step): void {
+  stepProgress(step): void {
     getTd(step, '.pf-c-progress__measure', '100%');
   }
 
@@ -148,7 +148,7 @@ export class Plan {
 
     // On the migration plan list page, click on the link in the 'Migrations' column
     cy.get('th')
-    .contains('name')
+    .contains(name)
     .closest('tr')
     .within(() => {
       cy.get('span.pf-c-icon.pf-m-info').click();
@@ -167,21 +167,21 @@ export class Plan {
     cy.get('td').contains('Cutover').click();
 
     //Pipeline steps common to both migration and staged migration
-    this.StepStatus('Prepare');
-    this.StepStatus('StageBackup');
-    this.StepStatus('Cleanup');
+    this.stepStatus('Prepare');
+    this.stepStatus('StageBackup');
+    this.stepStatus('Cleanup');
 
     if (migrationType.match('Stage'))
     //Pipeline step specific to staged migration
-      this.StepStatus('StageRestore');
+      this.stepStatus('StageRestore');
     else 
     //Pipeline step specific to migration
-      this.StepStatus('Backup');
-      this.StepProgress('Backup');
-      this.StepStatus('DirectImage');
-      this.StepStatus('DirectVolume');
-      this.StepStatus('Restore');
-      this.StepProgress('Restore');
+      this.stepStatus('Backup');
+      this.stepProgress('Backup');
+      this.stepStatus('DirectImage');
+      this.stepStatus('DirectVolume');
+      this.stepStatus('Restore');
+      this.stepProgress('Restore');
   }
 
   delete(planData: PlanData): void {
