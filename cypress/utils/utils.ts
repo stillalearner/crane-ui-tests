@@ -32,3 +32,12 @@ export function selectFromDroplist(selector: string, selectionMade: string): voi
   clickByText('button', selector);
   clickByText('button', selectionMade);
 }
+
+export function getTd(columnValue: string, locator: string, tdValue: string): void {
+  cy.get('td')
+    .contains(columnValue)
+    .closest('tr')
+    .within(() => {
+      cy.get(locator).contains(tdValue, { timeout: 2000 });
+    });
+}

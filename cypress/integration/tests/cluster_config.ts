@@ -60,3 +60,13 @@ export const directImagePlanData: PlanData = {
   namespaceList: ['nandini'],
   directImageMigration : true,
 }
+
+export const directImagePvPlan: PlanData = {
+  name: 'direct-image-pv-migration',
+  source: 'source-cluster',
+  target: 'host',
+  repo: 'automatic',
+  namespaceList: ['nandini'],
+  directImageMigration : true,
+  directPvmigration : true,
+}

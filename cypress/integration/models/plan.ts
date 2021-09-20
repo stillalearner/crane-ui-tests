@@ -1,5 +1,5 @@
 import { PlanData } from '../types/types';
-import { clickByText, click, inputText, next, selectFromDroplist } from '../../utils/utils';
+import { clickByText, click, inputText, next, selectFromDroplist, getTd } from '../../utils/utils';
 import { navMenuPoint } from '../views/menu.view';
 import { planNameInput, searchInput, searchButton, directPvMigrationCheckbox, verifyCopyCheckbox,
   directImageMigrationCheckbox, dataLabel, kebab, kebabDropDownItem } from '../views/plan.view';
@@ -74,7 +74,8 @@ export class Plan {
       .within(() => {
         click(kebab);
     });
-    clickByText(kebabDropDownItem, 'Migrate');
+    clickByText(kebabDropDownItem, 'Cutover');
+    cy.get('#transaction-halt-checkbox').uncheck()
     //Confirm dialog before migration
     clickByText('button', 'Migrate');
   }
@@ -106,6 +107,14 @@ export class Plan {
       });
   }
   
+  stepStatus(step): void {
+    getTd(step, '[data-label="Status"]', 'Complete');
+  }
+
+  stepProgress(step): void {
+    getTd(step, '.pf-c-progress__measure', '100%');
+  }
+
   create(planData: PlanData): void {
     const { name } = planData;
 
@@ -132,6 +141,47 @@ export class Plan {
     Plan.openList();
     this.run(name);
     this.waitForSuccess(name);
+  }
+
+  pipelineStatus(migrationType: string, planData: PlanData): void {
+    const { name } = planData;
+
+    // On the migration plan list page, click on the link in the 'Migrations' column
+    cy.get('th')
+    .contains(name)
+    .closest('tr')
+    .within(() => {
+      cy.get('span.pf-c-icon.pf-m-info').click();
+    });
+
+    // Proceed with checking the status of the individual pipeline steps only if Cutover/Stage/Migration
+    // has successfully completed.
+    // While on the 'Migrations' page, verify that status for Cutover/Stage/Migration shows 'Completed'.
+
+    cy.get('td')
+      .contains('Cutover')
+      .closest('tr')
+      .within(() => {
+        cy.get('[data-label="Status"]').contains('Completed', { timeout: 2000 });
+      })
+    cy.get('td').contains('Cutover').click();
+
+    //Pipeline steps common to both migration and staged migration
+    this.stepStatus('Prepare');
+    this.stepStatus('StageBackup');
+    this.stepStatus('Cleanup');
+
+    if (migrationType.match('Stage'))
+    //Pipeline step specific to staged migration
+      this.stepStatus('StageRestore');
+    else 
+    //Pipeline step specific to migration
+      this.stepStatus('Backup');
+      this.stepProgress('Backup');
+      this.stepStatus('DirectImage');
+      this.stepStatus('DirectVolume');
+      this.stepStatus('Restore');
+      this.stepProgress('Restore');
   }
 
   delete(planData: PlanData): void {
