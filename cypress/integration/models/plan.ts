@@ -106,6 +106,15 @@ export class Plan {
         cy.get(dataLabel.status).contains('Migration succeeded', { timeout: 600000 });
       });
   }
+
+  protected waitForRollbackSuccess(name: string): void {
+    cy.get('th')
+      .contains(name, { timeout: 10000 })
+      .closest('tr')
+      .within(() => {
+        cy.get(dataLabel.status).contains('Rollback succeeded', { timeout: 600000 });
+      });
+  }
   
   stepStatus(step): void {
     getTd(step, '[data-label="Status"]', 'Complete');
@@ -196,9 +205,28 @@ export class Plan {
     clickByText(kebabDropDownItem, 'Delete');
 
     //Confirm dialog before deletion
-    clickByText('button', 'Confirm');
+    clickByText('button', 'Delete');
+
+    this.waitForRollbackSuccess(name);
 
     //Wait for plan to be delted
     cy.findByText(`Successfully removed plan "${name}"!`, {timeout : 15000});
+  }
+
+  rollback(planData: PlanData): void {
+    const { name } = planData;
+    Plan.openList();
+    cy.get('th')
+      .contains(name)
+      .parent('tr')
+      .within(() => {
+        click(kebab);
+    });
+    clickByText(kebabDropDownItem, 'Rollback');
+
+    //Confirm dialog before Rollback migration
+    clickByText('button', 'Rollback');
+
+    this.waitForRollbackSuccess(name);
   }
 }
