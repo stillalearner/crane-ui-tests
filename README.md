@@ -29,6 +29,20 @@
 
       npm install
 
-    3.Open Cypress and run test cases. For eg: the tests within the indirect_migration_using_S3.test.ts file can be run using this command.
+    3.Specify Crane/MTC URL and and kubeadmin password in the cypress.json file
+      For eg:
+      [user1@localhost crane-ui-tests]$ cat cypress.json
+        {
+            "viewportWidth": 1280,
+            "viewportHeight": 800,
+            "supportFile": "cypress/support/commands.js",
+            "env": {
+                "user": "kubeadmin",
+                "pass": "password",
+                "craneUrl": "https://migration-openshift-migration.apps.cam-tgt-1122.gcp.devcluster.openshift.com/"
+            }
+        }
 
-      $(npm bin)/cypress run --browser firefox --spec "./cypress/integration/tests/indirect_migration_using_S3.test.ts" --no-exit
+    4.Open Cypress and run test cases. For eg: the tests within the indirect_migration_using_S3.test.ts file can be run using this command.
+      [user1@localhost]$ cd crane-ui-tests
+      [user1@localhost crane-ui-tests]$ npx cypress run --browser firefox --spec "./cypress/integration/tests/indirect_migration_using_S3.test.ts"
