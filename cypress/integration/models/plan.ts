@@ -59,8 +59,13 @@ export class Plan {
     if (directImageMigration)
       cy.get(directImageMigrationCheckbox, { timeout: 20000 }).should('be.enabled').check();
     else
-      cy.get(directImageMigrationCheckbox, { timeout: 20000 }).should('be.enabled').uncheck();
-    next();
+      cy.get(directImageMigrationCheckbox)
+        .invoke('attr', 'enabled')
+        .then(enabled => {
+          enabled ? cy.log('Button is disabled') : cy.get(directImageMigrationCheckbox).uncheck();
+      })
+
+      next();
   }
 
   protected hooks(): void {
@@ -205,11 +210,9 @@ export class Plan {
     clickByText(kebabDropDownItem, 'Delete');
 
     //Confirm dialog before deletion
-    clickByText('button', 'Delete');
+    clickByText('button', 'Confirm');
 
-    this.waitForRollbackSuccess(name);
-
-    //Wait for plan to be delted
+    //Wait for plan to be deleted
     cy.findByText(`Successfully removed plan "${name}"!`, {timeout : 15000});
   }
 
