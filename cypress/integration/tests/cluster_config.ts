@@ -22,6 +22,8 @@ export const noVerifyCopyPlanData: PlanData = {
   target: 'host',
   repo: 'automatic',
   namespaceList: ['nandini'],
+  directImageMigration : false,
+  directPvmigration : false,
 };
 
 export const verifyCopyPlanData: PlanData = {
