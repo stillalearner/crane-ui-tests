@@ -23,4 +23,5 @@ export type PlanData = {
   verifyCopy?: boolean;
   directPvmigration?: boolean;
   directImageMigration?: boolean;
+  nondefaultTargetNamespace?: boolean;
 };

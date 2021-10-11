@@ -7,6 +7,7 @@ export const selectRepo = '#selectedStorage';
 //Plan creation form - Namespaces page
 export const searchInput = '#name-input';
 export const searchButton = `[aria-label="search button for search input"]`;
+export const editTargetNamepace= 'span#inline-edit-icon';
 
 //Plan creation form - copy options page
 export const verifyCopyCheckbox = '.pf-c-check__input';

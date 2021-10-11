@@ -1,5 +1,6 @@
 import { ClusterData, PlanData } from '../types/types';
 import { RepoData } from '../types/types';
+import { planData } from './cluster_config_bk';
 
 export const clusterData: ClusterData = {
   name: 'source-cluster-1s',
@@ -71,4 +72,46 @@ export const directImagePvPlan: PlanData = {
   namespaceList: ['nandini'],
   directImageMigration : true,
   directPvmigration : true,
+}
+
+export const indirectMultipleProjects: PlanData = {
+  name: 'indirect-migration-of-multiple-projects',
+  source: 'source-cluster',
+  target: 'host',
+  repo: 'automatic',
+  namespaceList: ['nandini', 'chandra'],
+  directImageMigration : false,
+  directPvmigration : false,
+}
+
+export const directMultipleProjects: PlanData = {
+  name: 'direct-migration-of-multiple-projects',
+  source: 'source-cluster',
+  target: 'host',
+  repo: 'automatic',
+  namespaceList: ['nandini', 'chandra'],
+  directImageMigration : false,
+  directPvmigration : false,
+}
+
+export const changeTargetNamespace: PlanData = {
+  name: 'direct-migration-with-nondefault-target-namespace',
+  source: 'source-cluster',
+  target: 'host',
+  repo: 'automatic',
+  namespaceList: ['nandini'],
+  directImageMigration : false,
+  directPvmigration : false,
+  nondefaultTargetNamespace : true,
+};
+
+export const IndirectChangeTargetNamespace: PlanData = {
+  name: 'indirect-migration-with-nondefault-target-namespace',
+  source: 'source-cluster',
+  target: 'host',
+  repo: 'automatic',
+  namespaceList: ['nandini'],
+  directImageMigration : true,
+  directPvmigration : true,
+  nondefaultTargetNamespace : true,
 }
