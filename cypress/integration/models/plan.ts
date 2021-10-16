@@ -4,6 +4,9 @@ import { navMenuPoint } from '../views/menu.view';
 import { planNameInput, searchInput, searchButton, directPvMigrationCheckbox, verifyCopyCheckbox,
   directImageMigrationCheckbox, dataLabel, kebab, kebabDropDownItem, editTargetNamepace } from '../views/plan.view';
 
+const saveEdit = 'span#save-edit-icon';
+const targetNamespace = 'input[name="currentTargetNamespaceName"]';
+
 export class Plan {
   protected static openList(): void {
     clickByText(navMenuPoint, 'Migration plans');
@@ -30,15 +33,17 @@ export class Plan {
           click('input');
         });
 
-        //Update target namespace if project is being migrated to non default namespace
-      if (nondefaultTargetNamespace)
+      //Update target namespace if project is being migrated to non default namespace
+      if (nondefaultTargetNamespace) {
         cy.get('td')
           .contains(name)
           .parent('tr')
           .within(() => {
             click(editTargetNamepace);
         });
-        inputText('input[name="currentTargetNamespaceName"]', 'non-default');
+        inputText(targetNamespace, 'non-default');
+        click(saveEdit);
+      }
     });
     next();
   }
