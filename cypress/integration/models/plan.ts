@@ -25,7 +25,7 @@ export class Plan {
     const { namespaceList, nondefaultTargetNamespace } = planData;
     namespaceList.forEach((name) => {
       inputText(searchInput, name);
-      cy.get('button.pf-c-button.pf-m-control').first().click();
+      cy.get(searchButton).first().click();
       cy.get('td')
         .contains(name)
         .parent('tr')
