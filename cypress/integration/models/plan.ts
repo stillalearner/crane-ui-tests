@@ -2,7 +2,10 @@ import { PlanData } from '../types/types';
 import { clickByText, click, inputText, next, selectFromDroplist, getTd } from '../../utils/utils';
 import { navMenuPoint } from '../views/menu.view';
 import { planNameInput, searchInput, searchButton, directPvMigrationCheckbox, verifyCopyCheckbox,
-  directImageMigrationCheckbox, dataLabel, kebab, kebabDropDownItem } from '../views/plan.view';
+  directImageMigrationCheckbox, dataLabel, kebab, kebabDropDownItem, editTargetNamepace } from '../views/plan.view';
+
+const saveEdit = 'span#save-edit-icon';
+const targetNamespace = 'input[name="currentTargetNamespaceName"]';
 
 export class Plan {
   protected static openList(): void {
@@ -19,16 +22,28 @@ export class Plan {
   }
 
   protected selectNamespace(planData: PlanData): void {
-    const { namespaceList } = planData;
+    const { namespaceList, nondefaultTargetNamespace } = planData;
     namespaceList.forEach((name) => {
       inputText(searchInput, name);
-      click(searchButton);
+      cy.get(searchButton).first().click();
       cy.get('td')
         .contains(name)
         .parent('tr')
         .within(() => {
           click('input');
         });
+
+      //Update target namespace if project is being migrated to non default namespace
+      if (nondefaultTargetNamespace) {
+        cy.get('td')
+          .contains(name)
+          .parent('tr')
+          .within(() => {
+            click(editTargetNamepace);
+        });
+        inputText(targetNamespace, 'non-default');
+        click(saveEdit);
+      }
     });
     next();
   }
