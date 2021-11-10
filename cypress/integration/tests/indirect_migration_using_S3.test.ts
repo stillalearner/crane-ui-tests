@@ -6,6 +6,7 @@ import { Plan } from '../models/plan'
 
 const sourceCluster = Cypress.env('sourceCluster');
 const targetCluster = Cypress.env('targetCluster');
+const configurationScript = "../../../configuration_script.sh"
 
 describe('Automated tests to do direct and indirect migrations using Amazon S3 using file system copy method', () => {
   const plan = new Plan();
@@ -31,8 +32,8 @@ describe('Automated tests to do direct and indirect migrations using Amazon S3 u
     const [Data, migrationType] = $type;
 
     it(`${migrationType}`, () => {
-      cy.exec('configuration_script.sh setup_source_cluster sourceCluster', { timeout: 100000 });
-      cy.exec('configuration_script.sh setup_target_cluster targetCluster', { timeout: 100000 });
+      cy.exec(`${configurationScript} setup_source_cluster ${Data.namespaceList} "${sourceCluster}"`, { timeout: 100000 });
+      cy.exec(`${configurationScript} setup_target_cluster ${Data.namespaceList} "${targetCluster}"`, { timeout: 100000 });
       plan.create(Data);
       plan.execute(Data);
       if (`${migrationType}` == 'Rollover indirect migration and then migrate' ||
@@ -41,8 +42,8 @@ describe('Automated tests to do direct and indirect migrations using Amazon S3 u
         plan.execute(Data);
       }
       plan.delete(Data);
-      cy.exec('configuration_script.sh post_migration_verification_on_target targetCluster', { timeout: 100000 });
-      cy.exec('configuration_script.sh cleanup_source_cluster sourceCluster', { timeout: 100000 });
+      cy.exec(`${configurationScript} post_migration_verification_on_target ${Data.namespaceList} "${targetCluster}"`, { timeout: 100000 });
+      cy.exec(`${configurationScript} cleanup_source_cluster ${Data.namespaceList} "${sourceCluster}"`, { timeout: 100000 });
     });
   });
 })
