@@ -4,8 +4,10 @@
   "supportFile": "cypress/support/commands.js",
   "env": {
         "user": "kubeadmin",
-        "pass": "",
-        "craneUrl": ""
+        "password": "best-password-ever",
+        "craneUrl": "https://migration-openshift-migration.apps.devcluster.openshift.com",
+        "sourceCluster": "https://api.cam-src.devcluster.openshift.com:6443 -u kubeadmin -p  password",
+        "targetCluster": "https://api.cam.tgt.devcluster.openshift.com:6443 -u kubeadmin -p  password"
    }
 
 }

@@ -1,7 +1,7 @@
 import * as loginView from '../integration/views/login.view';
 
 const userName = Cypress.env('user');
-const userPassword = Cypress.env('pass');
+const userPassword = Cypress.env('password');
 const craneUiUrl = Cypress.env('craneUrl');
 
 export function inputText(fieldId: string, text: string): void {
