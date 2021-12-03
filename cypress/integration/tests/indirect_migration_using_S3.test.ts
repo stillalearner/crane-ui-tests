@@ -8,7 +8,7 @@ const sourceCluster = Cypress.env('sourceCluster');
 const targetCluster = Cypress.env('targetCluster');
 const configurationScript = "./cypress/utils/configuration_script.sh"
 
-describe('Automated tests to do direct and indirect migrations using Amazon S3 using file system copy method', () => {
+describe('Automated tests to do direct and indirect migrations', () => {
   const plan = new Plan();
   const selectorTuple = [
     [directImagePlanData, 'Direct image migration without copy verification'],
@@ -32,8 +32,8 @@ describe('Automated tests to do direct and indirect migrations using Amazon S3 u
     const [Data, migrationType] = $type;
 
     it(`${migrationType}`, () => {
-      cy.exec(`"${configurationScript}" setup_source_cluster ${Data.namespaceList} "${sourceCluster}"`, { timeout: 100000 });
-      cy.exec(`"${configurationScript}" setup_target_cluster ${Data.namespaceList} "${targetCluster}"`, { timeout: 100000 });
+      cy.exec(`"${configurationScript}" setup_source_cluster ${Data.namespaceList} "${sourceCluster}"`, { timeout: 200000 });
+      cy.exec(`"${configurationScript}" setup_target_cluster ${Data.namespaceList} "${targetCluster}"`, { timeout: 200000 });
       plan.create(Data);
       plan.execute(Data);
       if (`${migrationType}` == 'Rollover indirect migration and then migrate' ||
