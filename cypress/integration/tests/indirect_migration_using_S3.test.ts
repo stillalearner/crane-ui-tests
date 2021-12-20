@@ -24,14 +24,11 @@ describe('Automated tests to do direct and indirect migrations', () => {
     [IndirectChangeTargetNamespace, 'Indirect migration of a single project to non-default target namespace'],
   ];
   
-  before("Login", () => {
-    login();
-  });
-
   selectorTuple.forEach(($type) => {
     const [Data, migrationType] = $type;
 
     it(`${migrationType}`, () => {
+      login();
       cy.exec(`"${configurationScript}" setup_source_cluster ${Data.namespaceList} "${sourceCluster}"`, { timeout: 200000 });
       cy.exec(`"${configurationScript}" setup_target_cluster ${Data.namespaceList} "${targetCluster}"`, { timeout: 200000 });
       plan.create(Data);

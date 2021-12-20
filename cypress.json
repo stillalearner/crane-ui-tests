@@ -8,6 +8,11 @@
         "craneUrl": "https://migration-openshift-migration.apps.devcluster.openshift.com",
         "sourceCluster": "https://api.cam-src.devcluster.openshift.com:6443 -u kubeadmin -p  password",
         "targetCluster": "https://api.cam.tgt.devcluster.openshift.com:6443 -u kubeadmin -p  password"
-   }
+   },
+  "retries": {
+        "runMode": 2,
+        "openMode": 0
+   },
+  "defaultCommandTimeout": 10000 
 
 }
