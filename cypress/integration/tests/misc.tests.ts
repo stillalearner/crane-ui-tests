@@ -6,7 +6,7 @@ const sourceCluster = Cypress.env('sourceCluster');
 const targetCluster = Cypress.env('targetCluster');
 const configurationScript = "./cypress/utils/configuration_script.sh"
   
-describe('Automation deleteion of multiple plans', () => {
+describe('Automate deletion of multiple migration plans', () => {
     const plan = new Plan();
     
     before("Login", () => {
@@ -23,11 +23,12 @@ describe('Automation deleteion of multiple plans', () => {
         const [Data, migrationType] = $type;
         
         it(`${migrationType}`, () => {
-        cy.exec(`"${configurationScript}" setup_source_cluster ${Data.namespaceList} "${sourceCluster}"`, { timeout: 200000 });
-        cy.exec(`"${configurationScript}" setup_target_cluster ${Data.namespaceList} "${targetCluster}"`, { timeout: 200000 });
-        plan.create(Data);
-        plan.create(Data);
-        cy.exec(`"${configurationScript}" post_migration_verification_on_target ${Data.namespaceList} "${targetCluster}"`, { timeout: 100000 });
-        cy.exec(`"${configurationScript}" cleanup_source_cluster ${Data.namespaceList} "${sourceCluster}"`, { timeout: 100000 });
+            cy.exec(`"${configurationScript}" setup_source_cluster ${Data.namespaceList} "${sourceCluster}"`, { timeout: 200000 });
+            cy.exec(`"${configurationScript}" setup_target_cluster ${Data.namespaceList} "${targetCluster}"`, { timeout: 200000 });
+            plan.create(Data);
+            plan.delete(Data);
+            cy.exec(`"${configurationScript}" post_migration_verification_on_target ${Data.namespaceList} "${targetCluster}"`, { timeout: 100000 });
+            cy.exec(`"${configurationScript}" cleanup_source_cluster ${Data.namespaceList} "${sourceCluster}"`, { timeout: 100000 });
+        });
     });
 })
