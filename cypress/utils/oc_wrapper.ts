@@ -52,9 +52,4 @@ export function run_command_oc(cluster: string, command: string): any {
     return cy.exec("oc "+ command);
 
 }
-
-
-
-
-
   
