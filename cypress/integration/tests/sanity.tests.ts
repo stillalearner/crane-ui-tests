@@ -8,7 +8,7 @@ const sourceCluster = Cypress.env('sourceCluster');
 const targetCluster = Cypress.env('targetCluster');
 const configurationScript = "./cypress/utils/configuration_script.sh"
 
-describe('Automated tests to do direct and indirect migrations', () => {
+describe('Automated tests to do direct and indirect migrations and Basic Pipeline Status Verification', () => {
   const plan = new Plan();
   const selectorTuple = [
     [directImagePlanData, 'Direct image migration without copy verification'],
@@ -22,6 +22,7 @@ describe('Automated tests to do direct and indirect migrations', () => {
     [directMultipleProjects, 'Indirect migration of multiple projects'],
     [changeTargetNamespace, 'Direct migration of a single project to non-default target namespace'],
     [IndirectChangeTargetNamespace, 'Indirect migration of a single project to non-default target namespace'],
+    [directImagePvPlan, 'Direct image and PV migration'],
   ];
   
   selectorTuple.forEach(($type) => {
@@ -37,6 +38,9 @@ describe('Automated tests to do direct and indirect migrations', () => {
           `${migrationType}` == 'Rollover direct migration and then migrate') {
         plan.rollback(Data);
         plan.execute(Data);
+      }
+      if (`${migrationType}` == 'Direct image and PV migration') {
+        plan.pipelineStatus(migrationType, Data);
       }
       plan.delete(Data);
       cy.exec(`"${configurationScript}" post_migration_verification_on_target ${Data.namespaceList} "${targetCluster}"`, { timeout: 100000 });
