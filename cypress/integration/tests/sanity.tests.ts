@@ -15,7 +15,7 @@ describe('Automated tests to do direct and indirect migrations and Basic Pipelin
     [directPvPlanData, 'Direct PV migration without copy verification'],
     [verifyCopydirectPvPlan, 'Direct PV migration with copy verification'],
     [noVerifyCopyPlanData, 'Indirect migration without copy verification'],
-    [verifyCopyPlanData, 'Indirect migration with copy verification'],
+    [verifyCopyPlanData, 'Direct migration with copy verification'],
     [noVerifyCopyPlanData, 'Rollover indirect migration and then migrate'],
     [directImagePvPlan, 'Rollover direct migration and then migrate'],
     [indirectMultipleProjects, 'Indirect migration of multiple projects'],
