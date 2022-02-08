@@ -13,10 +13,13 @@ export class Plan {
   }
   
   protected generalStep(planData: PlanData): void {
-    const { name, source, target, repo } = planData;
+    const { name, source, target, repo, migration_type } = planData;
     inputText(planNameInput, name);
+    selectFromDroplist('Select', migration_type)
     selectFromDroplist('Select source', source);
-    selectFromDroplist('Select target', target);
+    if (migration_type == 'Full migration - migrate namespaces, persistent volumes (PVs) and Kubernetes resources from one cluster to another' || migration_type == 'State migration - migrate only PVs and Kubernetes resources between namespaces in the same cluster or different clustersState') {
+      selectFromDroplist('Select target', target);
+    }
     selectFromDroplist('Select repository', repo);
     next();
   }
@@ -84,7 +87,7 @@ export class Plan {
   }
 
   protected hooks(): void {
-    clickByText('button', 'Finish');
+    clickByText('button', 'Next');
   }
 
   protected run(name: string): void {

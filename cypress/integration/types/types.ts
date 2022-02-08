@@ -19,6 +19,7 @@ export type PlanData = {
   source: string;
   target: string;
   repo: string;
+  migration_type: string;
   namespaceList : string[];
   verifyCopy?: boolean;
   directPvmigration?: boolean;

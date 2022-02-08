@@ -2,6 +2,7 @@
 export const planNameInput = '#planName';
 export const selectSourceCluster = '#sourceCluster';
 export const selectTargetCluster = '#targetCluster';
+export const selectMigrationType = '#migrationType';
 export const selectRepo = '#selectedStorage';
 
 //Plan creation form - Namespaces page
