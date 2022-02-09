@@ -15,9 +15,9 @@ export class Plan {
   protected generalStep(planData: PlanData): void {
     const { name, source, target, repo, migration_type } = planData;
     inputText(planNameInput, name);
-    selectFromDroplist('Select', migration_type)
-    selectFromDroplist('Select source', source);
-    if (migration_type == 'Full migration - migrate namespaces, persistent volumes (PVs) and Kubernetes resources from one cluster to another' || migration_type == 'State migration - migrate only PVs and Kubernetes resources between namespaces in the same cluster or different clustersState') {
+    selectFromDroplist('Select', 'Full migration')
+    selectFromDroplist('Select source', migration_type);
+    if (migration_type == 'Full migration' || migration_type == 'State migration') {
       selectFromDroplist('Select target', target);
     }
     selectFromDroplist('Select repository', repo);
