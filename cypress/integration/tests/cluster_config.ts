@@ -1,6 +1,6 @@
 import { ClusterData, PlanData } from '../types/types';
 import { RepoData } from '../types/types';
-import { planData } from './cluster_config_bk';
+
 
 export const clusterData: ClusterData = {
   name: 'source-cluster-1s',
@@ -22,6 +22,7 @@ export const noVerifyCopyPlanData: PlanData = {
   source: 'source-cluster',
   target: 'host',
   repo: 'automatic',
+  migration_type: 'Full migration',
   namespaceList: ['nandini'],
   directImageMigration : false,
   directPvmigration : false,
@@ -31,6 +32,7 @@ export const verifyCopyPlanData: PlanData = {
   name: 'migration-with-copy-verify',
   source: 'source-cluster',
   target: 'host',
+  migration_type: 'Full migration',
   repo: 'automatic',
   namespaceList: ['nandini'],
   verifyCopy : true,
@@ -38,6 +40,7 @@ export const verifyCopyPlanData: PlanData = {
 
 export const directPvPlanData: PlanData = {
   name: 'direct-pv-migration',
+  migration_type: 'Full migration',
   source: 'source-cluster',
   target: 'host',
   repo: 'automatic',
@@ -47,6 +50,7 @@ export const directPvPlanData: PlanData = {
 
 export const verifyCopydirectPvPlan: PlanData = {
   name: 'direct-pv-migration-with-copy-verify',
+  migration_type: 'Full migration',
   source: 'source-cluster',
   target: 'host',
   repo: 'automatic',
@@ -57,6 +61,7 @@ export const verifyCopydirectPvPlan: PlanData = {
 
 export const directImagePlanData: PlanData = {
   name: 'direct-image-migration',
+  migration_type: 'Full migration',
   source: 'source-cluster',
   target: 'host',
   repo: 'automatic',
@@ -66,6 +71,7 @@ export const directImagePlanData: PlanData = {
 
 export const directImagePvPlan: PlanData = {
   name: 'direct-image-pv-migration',
+  migration_type: 'Full migration',
   source: 'source-cluster',
   target: 'host',
   repo: 'automatic',
@@ -76,6 +82,7 @@ export const directImagePvPlan: PlanData = {
 
 export const indirectMultipleProjects: PlanData = {
   name: 'indirect-migration-of-multiple-projects',
+  migration_type: 'Full migration',
   source: 'source-cluster',
   target: 'host',
   repo: 'automatic',
@@ -86,6 +93,7 @@ export const indirectMultipleProjects: PlanData = {
 
 export const directMultipleProjects: PlanData = {
   name: 'direct-migration-of-multiple-projects',
+  migration_type: 'Full migration',
   source: 'source-cluster',
   target: 'host',
   repo: 'automatic',
@@ -96,6 +104,7 @@ export const directMultipleProjects: PlanData = {
 
 export const changeTargetNamespace: PlanData = {
   name: 'direct-migration-with-nondefault-target-namespace',
+  migration_type: 'Full migration',
   source: 'source-cluster',
   target: 'host',
   repo: 'automatic',
@@ -107,6 +116,7 @@ export const changeTargetNamespace: PlanData = {
 
 export const IndirectChangeTargetNamespace: PlanData = {
   name: 'indirect-migration-with-nondefault-target-namespace',
+  migration_type: 'Full migration',
   source: 'source-cluster',
   target: 'host',
   repo: 'automatic',
