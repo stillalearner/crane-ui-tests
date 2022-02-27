@@ -20,7 +20,6 @@ export function login(): void {
   cy.visit(craneUiUrl);
   cy.get('body').then((body) => {
     if (body.find("h1:contains('Migration Toolkit for Containers')").length != 1) {
-      cy.log("Entered.....")
       cy.findByText('kube:admin').click();
       inputText(loginView.userNameInput, userName);
       inputText(loginView.userPasswordInput, userPassword);
