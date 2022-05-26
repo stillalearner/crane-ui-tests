@@ -30,8 +30,8 @@ describe('Automated tests to do direct and indirect migrations and Basic Pipelin
 
     it(`${migrationType}`, () => {
       login();
-      cy.exec(`"${configurationScript}" setup_source_cluster ${Data.namespaceList} "${sourceCluster}"`, { timeout: 200000 });
-      cy.exec(`"${configurationScript}" setup_target_cluster ${Data.namespaceList} "${targetCluster}"`, { timeout: 200000 });
+      cy.exec(`"${configurationScript}" setup_source_cluster ${Data.namespaceList} ${sourceCluster}`, { timeout: 200000 });
+      cy.exec(`"${configurationScript}" setup_target_cluster ${Data.namespaceList} ${targetCluster}`, { timeout: 200000 });
       plan.create(Data);
       plan.execute(Data);
       if (`${migrationType}` == 'Rollover indirect migration and then migrate' ||
@@ -43,8 +43,8 @@ describe('Automated tests to do direct and indirect migrations and Basic Pipelin
         plan.pipelineStatus(migrationType, Data);
       }
       plan.delete(Data);
-      cy.exec(`"${configurationScript}" post_migration_verification_on_target ${Data.namespaceList} "${targetCluster}"`, { timeout: 100000 });
-      cy.exec(`"${configurationScript}" cleanup_source_cluster ${Data.namespaceList} "${sourceCluster}"`, { timeout: 100000 });
+      cy.exec(`"${configurationScript}" post_migration_verification_on_target ${Data.namespaceList} ${targetCluster}`, { timeout: 100000 });
+      cy.exec(`"${configurationScript}" cleanup_source_cluster ${Data.namespaceList} ${sourceCluster}`, { timeout: 100000 });
     });
   });
 })
