@@ -33,7 +33,7 @@
       discovery   discovery-openshift-migration.apps.cam-tgt-1122.devcluster.openshift.com             discovery      <all>       edge/Redirect   None
       migration   migration-openshift-migration.apps.cam-tgt-1122.devcluster.openshift.com             migration-ui   port-9000   edge/Redirect   None
 
-    4.Specify Crane/MTC URL and kubeadmin password of the cluster hosting the Crane/MTC controller in the cypress.json file.
+    4.Specify Crane/MTC URL, kubeadmin password of the cluster hosting the Crane/MTC controller, source and target cluster login command in the cypress.json file.
       For eg:
 
       [user1@localhost crane-ui-tests]$ cat cypress.json
@@ -44,7 +44,9 @@
         "env": {
             "user": "kubeadmin",
             "pass": "password",
-            "craneUrl": "https://migration-openshift-migration.apps.cam-tgt-1122.devcluster.openshift.com"
+            "craneUrl": "https://migration-openshift-migration.apps.cam-tgt-1122.devcluster.openshift.com",
+            "sourceCluster": "oc login https://api.cam-src.devcluster.openshift.com:6443 -u kubeadmin -p  password",
+            "targetCluster": "oc login https://api.cam.tgt.devcluster.openshift.com:6443 -u kubeadmin -p  password"
         }
       }
   
