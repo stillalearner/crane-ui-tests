@@ -1,5 +1,6 @@
 //Plan creation form - General page
 export const planNameInput = '#planName';
+export const migrationType = '#migrationType';
 export const selectSourceCluster = '#sourceCluster';
 export const selectTargetCluster = '#targetCluster';
 export const selectRepo = '#selectedStorage';

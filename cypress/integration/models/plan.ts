@@ -2,7 +2,8 @@ import { PlanData } from '../types/types';
 import { clickByText, click, inputText, next, selectFromDroplist, getTd } from '../../utils/utils';
 import { navMenuPoint } from '../views/menu.view';
 import { planNameInput, searchInput, searchButton, directPvMigrationCheckbox, verifyCopyCheckbox,
-  directImageMigrationCheckbox, dataLabel, kebab, kebabDropDownItem, editTargetNamepace } from '../views/plan.view';
+  directImageMigrationCheckbox, dataLabel, kebab, kebabDropDownItem, editTargetNamepace, 
+  migrationType} from '../views/plan.view';
 
 const saveEdit = 'span#save-edit-icon';
 const targetNamespace = 'input[name="currentTargetNamespaceName"]';
@@ -15,6 +16,7 @@ export class Plan {
   protected generalStep(planData: PlanData): void {
     const { name, source, target, repo } = planData;
     inputText(planNameInput, name);
+    selectFromDroplist('Select...', migrationType)
     selectFromDroplist('Select source', source);
     selectFromDroplist('Select target', target);
     selectFromDroplist('Select repository', repo);
